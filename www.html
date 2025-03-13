@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pwd_gen</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        textarea { width: 100%; height: 100px; margin-bottom: 10px; }
+        button { padding: 10px 20px; cursor: pointer; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h2>pwd_gen</h2>
+    <textarea id="inputText">Ой у лузі червона калина похилилася
+Чогось наша славна Україна зажурилася</textarea>
+    <button onclick="encodeText()">Encode</button>
+    <h3>Result:</h3>
+    <pre id="outputText"></pre>
+
+    <script>
+        const ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
+        const alphabetMapping = {};
+        const minAscii = 32;
+        const maxAscii = 126;
+        const maxCode = maxAscii - minAscii;
+
+        ukrainianAlphabet.split('').forEach((char, index) => {
+            alphabetMapping[char] = index + 1;
+        });
+
+        function encodeText() {
+            let inputText = document.getElementById("inputText").value;
+            let outputText = "";
+            let p = 0;
+            
+            inputText.split('\n').forEach(line => {
+                let processedLine = "";
+                for (let i = 0; i < line.length; i++) {
+                    let char = line[i].toUpperCase();
+                    if (alphabetMapping[char]) {
+                        p++;
+                        let a = alphabetMapping[char];
+                        let positionScore = (a * p) % maxCode;
+                        let finalScore = positionScore + minAscii;
+                        processedLine += String.fromCharCode(finalScore);
+                    }
+                }
+                outputText += processedLine + '\n';
+            });
+            document.getElementById("outputText").textContent = outputText;
+        }
+    </script>
+</body>
+</html>
