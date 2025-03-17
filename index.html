@@ -16,6 +16,8 @@
 </head>
 <body>
     <h2>pwd_gen</h2>
+    <label>Alphabet: <textarea id="alphabetInput" rows="1" cols="50" oninput="updateAlphabet()">АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ</textarea></label>
+    <br>
     <textarea id="inputText">Ой у лузі червона калина похилилася
 Чогось наша славна Україна зажурилася</textarea>
     <br>
@@ -39,15 +41,19 @@
     </table>
 
     <script>
-        const ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
-        const alphabetMapping = {};
+        let alphabetMapping = {};
         const minAscii = 32;
         const maxAscii = 126;
         const maxCode = maxAscii - minAscii;
 
-        ukrainianAlphabet.split('').forEach((char, index) => {
-            alphabetMapping[char] = index + 1;
-        });
+        function updateAlphabet() {
+            const newAlphabet = document.getElementById("alphabetInput").value;
+            alphabetMapping = {};
+            newAlphabet.split('').forEach((char, index) => {
+                alphabetMapping[char] = index + 1;
+            });
+        }
+        updateAlphabet();
 
         function encodeText() {
             let inputText = document.getElementById("inputText").value;
@@ -108,7 +114,7 @@
             if (entropy > 60) strength = "Strong";
             if (entropy > 80) strength = "Very Strong";
 
-            document.getElementById("passwordStrength").textContent = `Entropy: ${entropy.toFixed(2)} bits | Strength: ${strength} | Lenght: ${length}`;
+            document.getElementById("passwordStrength").textContent = `Entropy: ${entropy.toFixed(2)} bits | Strength: ${strength} | Length: ${length}`;
         }
     </script>
 </body>
