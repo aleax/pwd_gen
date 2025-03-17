@@ -18,6 +18,10 @@
     <h2>pwd_gen</h2>
     <textarea id="inputText">Ой у лузі червона калина похилилася
 Чогось наша славна Україна зажурилася</textarea>
+    <br>
+    <label>
+        <input type="checkbox" id="lineBreak" checked> Print result line by line
+    </label>
     <button onclick="encodeText()">Encode</button>
     <h3>Result:</h3>
     <pre id="outputText"></pre>
@@ -50,6 +54,7 @@
             let outputText = "";
             let p = 0;
             let tableContent = "";
+            let addLineBreaks = document.getElementById("lineBreak").checked;
             
             document.getElementById("conversionTable").innerHTML = `
                 <tr>
@@ -81,11 +86,11 @@
                         </tr>`;
                     }
                 }
-                outputText += processedLine;
+                outputText += processedLine + (addLineBreaks ? '\n' : '');
             });
             document.getElementById("outputText").textContent = outputText;
             document.getElementById("conversionTable").innerHTML += tableContent;
-            evaluatePasswordStrength(outputText);
+            evaluatePasswordStrength(outputText.replace(/\n/g, ""));
         }
 
         function evaluatePasswordStrength(password) {
@@ -103,7 +108,7 @@
             if (entropy > 60) strength = "Strong";
             if (entropy > 80) strength = "Very Strong";
 
-            document.getElementById("passwordStrength").textContent = `Entropy: ${entropy.toFixed(2)} bits\nStrength: ${strength}`;
+            document.getElementById("passwordStrength").textContent = `Entropy: ${entropy.toFixed(2)} bits | Strength: ${strength}`;
         }
     </script>
 </body>
