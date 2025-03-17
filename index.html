@@ -108,7 +108,7 @@
             if (entropy > 60) strength = "Strong";
             if (entropy > 80) strength = "Very Strong";
 
-            document.getElementById("passwordStrength").textContent = `Entropy: ${entropy.toFixed(2)} bits | Strength: ${strength}`;
+            document.getElementById("passwordStrength").textContent = `Entropy: ${entropy.toFixed(2)} bits | Strength: ${strength} | Lenght: ${length}`;
         }
     </script>
 </body>
