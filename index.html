@@ -34,13 +34,7 @@
     <pre id="passwordStrength"></pre>
     <h3>Character Conversion Table:</h3>
     <table id="conversionTable">
-        <tr>
-            <th>Original Symbol</th>
-            <th>Symbol Position</th>
-            <th>Symbol Position in Alphabet</th>
-            <th>ASCII Code (Hex)</th>
-            <th>Result Symbol</th>
-        </tr>
+
     </table>
 
     <script>
@@ -75,8 +69,11 @@
             document.getElementById("conversionTable").innerHTML = `
                 <tr>
                     <th>Original Symbol</th>
-                    <th>Symbol Position</th>
-                    <th>Symbol Position in Alphabet</th>
+                    <th>Symbol Position in Alphabet (a)</th>
+                    <th>Symbol Position in Line (p)</th>
+                    <th>a * p</th>
+                    <th>a * p % ${maxCode}</th>
+                    <th>a * p % ${maxCode}+${minAscii}</th>
                     <th>ASCII Code (Hex)</th>
                     <th>Result Symbol</th>
                 </tr>`;
@@ -89,15 +86,19 @@
                     if (alphabetMapping[char]) {
                         p++;
                         let a = alphabetMapping[char];
-                        let positionScore = (a * p) % maxCode;
+                        let position = a * p
+                        let positionScore = position % maxCode;
                         let finalScore = positionScore + minAscii;
                         let resultChar = String.fromCharCode(finalScore);
                         processedLine += resultChar;
                         
                         tableContent += `<tr>
                             <td>${char}</td>
-                            <td>${p}</td>
                             <td>${a}</td>
+                            <td>${p}</td>
+                            <td>${position}</td>
+                            <td>${positionScore}</td>
+                            <td>${finalScore}</td>
                             <td>${finalScore.toString(16).toUpperCase()}</td>
                             <td>${resultChar}</td>
                         </tr>`;
