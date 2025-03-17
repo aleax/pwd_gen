@@ -24,9 +24,12 @@
     <label>
         <input type="checkbox" id="lineBreak" checked> Print result line by line
     </label>
+    <label>
+        <input type="checkbox" id="includeSpace" checked onchange="updateMinAscii()"> Include space in password calculation
+    </label>
     <button onclick="encodeText()">Encode</button>
     <h3>Result:</h3>
-    <pre id="outputText"></pre>
+    <pre id="outputText" style="font-family: monospace;"></pre>
     <h3>Password Strength:</h3>
     <pre id="passwordStrength"></pre>
     <h3>Character Conversion Table:</h3>
@@ -42,9 +45,9 @@
 
     <script>
         let alphabetMapping = {};
-        const minAscii = 32;
+        //const minAscii = 32;
         const maxAscii = 126;
-        const maxCode = maxAscii - minAscii;
+       // const maxCode = maxAscii - minAscii;
 
         function updateAlphabet() {
             const newAlphabet = document.getElementById("alphabetInput").value;
@@ -61,6 +64,13 @@
             let p = 0;
             let tableContent = "";
             let addLineBreaks = document.getElementById("lineBreak").checked;
+            let includeSpace = document.getElementById("includeSpace").checked;
+
+            let minAscii = 32;
+            if(!includeSpace)
+                minAscii = 33;
+
+            const maxCode = maxAscii - minAscii;
             
             document.getElementById("conversionTable").innerHTML = `
                 <tr>
