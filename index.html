@@ -18,6 +18,8 @@
     <button onclick="encodeText()">Encode</button>
     <h3>Result:</h3>
     <pre id="outputText"></pre>
+    <h3>Password Strength:</h3>
+    <pre id="passwordStrength"></pre>
 
     <script>
         const ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
@@ -50,6 +52,25 @@
                 outputText += processedLine + '\n';
             });
             document.getElementById("outputText").textContent = outputText;
+            evaluatePasswordStrength(outputText);
+        }
+
+        function evaluatePasswordStrength(password) {
+            const length = password.length;
+            const uniqueChars = new Set(password).size;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasDigits = /[0-9]/.test(password);
+            const hasSpecial = /[^A-Za-z0-9]/.test(password);
+            const charsetSize = (hasUpperCase ? 26 : 0) + (hasLowerCase ? 26 : 0) + (hasDigits ? 10 : 0) + (hasSpecial ? 32 : 0);
+            const entropy = length * Math.log2(charsetSize);
+
+            let strength = "Weak";
+            if (entropy > 40) strength = "Medium";
+            if (entropy > 60) strength = "Strong";
+            if (entropy > 80) strength = "Very Strong";
+
+            document.getElementById("passwordStrength").textContent = `Entropy: ${entropy.toFixed(2)} bits\nStrength: ${strength}`;
         }
     </script>
 </body>
