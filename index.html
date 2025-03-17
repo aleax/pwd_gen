@@ -9,6 +9,9 @@
         textarea { width: 100%; height: 100px; margin-bottom: 10px; }
         button { padding: 10px 20px; cursor: pointer; }
         pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid black; padding: 5px; text-align: center; }
+        th { background: #ddd; }
     </style>
 </head>
 <body>
@@ -20,6 +23,16 @@
     <pre id="outputText"></pre>
     <h3>Password Strength:</h3>
     <pre id="passwordStrength"></pre>
+    <h3>Character Conversion Table:</h3>
+    <table id="conversionTable">
+        <tr>
+            <th>Original Symbol</th>
+            <th>Symbol Position</th>
+            <th>Symbol Position in Alphabet</th>
+            <th>ASCII Code (Hex)</th>
+            <th>Result Symbol</th>
+        </tr>
+    </table>
 
     <script>
         const ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
@@ -36,7 +49,17 @@
             let inputText = document.getElementById("inputText").value;
             let outputText = "";
             let p = 0;
+            let tableContent = "";
             
+            document.getElementById("conversionTable").innerHTML = `
+                <tr>
+                    <th>Original Symbol</th>
+                    <th>Symbol Position</th>
+                    <th>Symbol Position in Alphabet</th>
+                    <th>ASCII Code (Hex)</th>
+                    <th>Result Symbol</th>
+                </tr>`;
+
             inputText.split('\n').forEach(line => {
                 let processedLine = "";
                 for (let i = 0; i < line.length; i++) {
@@ -46,12 +69,22 @@
                         let a = alphabetMapping[char];
                         let positionScore = (a * p) % maxCode;
                         let finalScore = positionScore + minAscii;
-                        processedLine += String.fromCharCode(finalScore);
+                        let resultChar = String.fromCharCode(finalScore);
+                        processedLine += resultChar;
+                        
+                        tableContent += `<tr>
+                            <td>${char}</td>
+                            <td>${p}</td>
+                            <td>${a}</td>
+                            <td>${finalScore.toString(16).toUpperCase()}</td>
+                            <td>${resultChar}</td>
+                        </tr>`;
                     }
                 }
-                outputText += processedLine + '\n';
+                outputText += processedLine;
             });
             document.getElementById("outputText").textContent = outputText;
+            document.getElementById("conversionTable").innerHTML += tableContent;
             evaluatePasswordStrength(outputText);
         }
 
