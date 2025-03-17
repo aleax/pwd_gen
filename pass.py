@@ -39,9 +39,9 @@ def process_text(input_text):
     # Process the text to replace letters with ASCII symbols, applying overflow first
     lines = input_text.split('\n')
     processed_lines = []
-    p=0
     for line in lines:
         processed_line = []
+        p=0
         for i, char in enumerate(line):
             if char.upper() in alphabet_mapping:
                 p=p+1

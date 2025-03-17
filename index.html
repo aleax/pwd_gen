@@ -83,6 +83,7 @@
 
             inputText.split('\n').forEach(line => {
                 let processedLine = "";
+                p=0;
                 for (let i = 0; i < line.length; i++) {
                     let char = line[i].toUpperCase();
                     if (alphabetMapping[char]) {
